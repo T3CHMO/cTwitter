@@ -82,7 +82,7 @@ function renderProducts() {
 function productTemplate(_post) {
   return `
     <div class="card mb-4">
-      <img class="card-img-top" src="${_post.image}" alt="...">
+      ${showImg(_post.image)}
       <div class="position-absolute top-0 end-0 bg-warning mt-4 px-2 py-1 rounded-start">
          ${_post.likes} Likes
       </div>
@@ -99,18 +99,29 @@ function productTemplate(_post) {
           <span>${_post.date}</span>
         </p>
         <div class="d-grid gap-2">
+        <span>
             ${boolToLikes(_post.liked, _post.index)}
+            
+            </span>
         </div>
       </div>
     </div>
   `
 }
 
+function showImg(_image) {
+  if(_image != "" ) {
+    return `<img class="card-img-top" src="${_image}" alt="..."></img>` 
+  } else {
+    return `<div></div>` 
+  }
+}
+
 function boolToLikes(_bool, _index) {
     if(_bool) {
-        return `<a class="btn btn-lg btn-outline-dark likeBtn fs-6 p-3 disabled" id=${_index}>Liked</a>`
+        return `<a class="btn btn-sm btn-outline-dark likeBtn fs-6 p-2 disabled" id=${_index}>Liked</a>`
     } else {
-        return `<a class="btn btn-lg btn-outline-dark likeBtn fs-6 p-3" id=${_index}>Like this post</a>`
+        return `<a class="btn btn-sm btn-outline-dark likeBtn fs-6 p-2" id=${_index}>Like this post</a>`
     }
 }
 
