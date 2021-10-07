@@ -4,7 +4,7 @@ import BigNumber from "bignumber.js"
 import ctwitterAbi from "../contract/ctwitter.abi.json"
 
 const DECIMALS = 18
-const MPContractAddress = "0x705ce9f85210d239130B0619A7792e8aA33b51Ed"
+const MPContractAddress = "0xD1616B3b52CE296C9fcC0E4dc571C5Cb4c781a70"
 
 let kit
 let contract
@@ -34,7 +34,7 @@ const connectCeloWallet = async function () {
 
 
 const getUser = async function () {
-    document.querySelector("#avatar").innerHTML = identiconTemplate(kit.defaultAccount);
+  document.querySelector("#avatar").innerHTML = identiconTemplate(kit.defaultAccount);
 }
 
 const getBalance = async function () {
@@ -43,10 +43,15 @@ const getBalance = async function () {
   document.querySelector("#balance").textContent = cUSDBalance
 }
 
-async function isPostLiked(user, index ) {
-     return await contract.methods.isPostLiked(user, index).call()
+async function isPostLiked(user, index) {
+  return await contract.methods.isPostLiked(user, index).call()
 }
-const getPosts = async function() {
+
+async function getComments(index) {
+  return await contract.methods.getComments(index).call()
+}
+
+const getPosts = async function () {
   const _postLength = await contract.methods.getPostsLength().call()
   const _posts = []
   for (let i = 0; i < _postLength; i++) {
@@ -60,7 +65,8 @@ const getPosts = async function() {
         post: p[3],
         date: new Date(p[4] * 1000),
         likes: p[5],
-        liked: await isPostLiked(kit.defaultAccount, i)
+        liked: await isPostLiked(kit.defaultAccount, i),
+        comments: await getComments(i)
       })
     })
     _posts.push(_post)
@@ -100,9 +106,20 @@ function productTemplate(_post) {
         </p>
         <div class="d-grid gap-2">
         <span>
-            ${boolToLikes(_post.liked, _post.index)}
-            
+        <div class="input-group">
+        <div class="input-group-prepend"></div>
+        <textarea id=comment_${_post.index} class="form-control p-2" style="margin-bottom:10px" aria-label="With textarea"></textarea>
+        </div>
+          <a class="btn btn-sm btn-outline-dark commentBtn fs-6 p-2" id=${_post.index} >Comment</a>
+          <button class="btn btn-sm btn-outline-dark fs-6 p-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Show comments</button>
+          ${boolToLikes(_post.liked, _post.index)}
             </span>
+          <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+              ${formatComments(_post.comments)}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -110,19 +127,29 @@ function productTemplate(_post) {
 }
 
 function showImg(_image) {
-  if(_image != "" ) {
-    return `<img class="card-img-top" src="${_image}" alt="..."></img>` 
+  if (_image != "") {
+    return `<img class="card-img-top" src="${_image}" alt="..."></img>`
   } else {
-    return `<div></div>` 
+    return `<div></div>`
   }
 }
 
+function formatComments(comments) {
+  let result = ''
+  comments.forEach(element => {
+    result+= `<span style="display: inline-flex;align-items: center;">`+identiconTemplate(element[0])+``+element[2]+`</span>`
+    result+= `<span>`+new Date(element[1] * 1000)+`</span>`
+  })
+
+  return result
+}
+
 function boolToLikes(_bool, _index) {
-    if(_bool) {
-        return `<a class="btn btn-sm btn-outline-dark likeBtn fs-6 p-2 disabled" id=${_index}>Liked</a>`
-    } else {
-        return `<a class="btn btn-sm btn-outline-dark likeBtn fs-6 p-2" id=${_index}>Like this post</a>`
-    }
+  if (_bool) {
+    return `<a class="btn btn-sm btn-outline-dark likeBtn fs-6 p-2 disabled" id=${_index}>Liked</a>`
+  } else {
+    return `<a class="btn btn-sm btn-outline-dark likeBtn fs-6 p-2" id=${_index}>Like this post</a>`
+  }
 }
 
 function identiconTemplate(_address) {
@@ -198,4 +225,22 @@ document.querySelector("#ctwitter").addEventListener("click", async (e) => {
       notification(`⚠️ ${error}.`)
     }
   }
-})  
+})
+
+document.querySelector("#ctwitter").addEventListener("click", async (e) => {
+  if (e.target.className.includes("commentBtn")) {
+    const index = e.target.id
+    const id = "#comment_"+index
+    const comment = document.querySelector(id)
+    notification(`⌛ Awaiting to comment "${products[index].name}"...`)
+    try {
+      const result = await contract.methods.comment(index, comment.value).send({ from: kit.defaultAccount })
+      notification(`🎉 You successfully commented "${products[index].name}".`)
+      getPosts()
+      getBalance()
+      getUser()
+    } catch (error) {
+      notification(`⚠️ ${error}.`)
+    }
+  }
+})
