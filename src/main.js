@@ -4,7 +4,7 @@ import BigNumber from "bignumber.js"
 import ctwitterAbi from "../contract/ctwitter.abi.json"
 
 const DECIMALS = 18
-const MPContractAddress = "0xD1616B3b52CE296C9fcC0E4dc571C5Cb4c781a70"
+const MPContractAddress = "0xD1e673bcb81981d7d532942902fCc2633adc4cB3"
 
 let kit
 let contract
@@ -110,10 +110,9 @@ function productTemplate(_post) {
         <div class="input-group-prepend"></div>
         <textarea id=comment_${_post.index} class="form-control p-2" style="margin-bottom:10px" aria-label="With textarea"></textarea>
         </div>
-          <a class="btn btn-sm btn-outline-dark commentBtn fs-6 p-2" id=${_post.index} >Comment</a>
-          <button class="btn btn-sm btn-outline-dark fs-6 p-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-            Show comments</button>
           ${boolToLikes(_post.liked, _post.index)}
+          <button class="btn btn-sm btn-outline-dark fs-6 p-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Show comments</button>
+            <a class="btn btn-sm btn-outline-dark commentBtn fs-6 p-2" id=${_post.index} >Comment</a>
             </span>
           <div class="collapse" id="collapseExample">
             <div class="card card-body">
