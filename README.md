@@ -5,6 +5,8 @@ Welcome to cTwitter social dapp where you can post, like and comment posts.
 Feel free to visit dapp on
 https://t3chmo.github.io/cTwitter/
 
+![image](https://user-images.githubusercontent.com/38141864/136324220-d46378f7-f86f-48d3-81cf-928f89ee75ab.png)
+
 # Additional notes
 For all activity like postking, liking and commenting user is required to have CELO in his wallet, but all operation are free so user will only pay gas.
 
