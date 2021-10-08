@@ -14,9 +14,17 @@ contract cTwitter {
         uint date;
         uint likes;
     }
+    
+    struct Comment {
+        address commenter;
+        uint date;
+        string comment;
+    }
 
     mapping (uint => Posts) internal posts;
     mapping (address => mapping(uint => bool)) internal likedPosts;
+    mapping (uint => Comment[]) internal comments;
+    mapping (uint => uint) internal commentLength;
 
     function addPost(string memory _name, string memory _image, string memory _post) public {
         uint _likes = 0;
@@ -48,4 +56,19 @@ contract cTwitter {
     function isPostLiked(address _user, uint _index) public view returns (bool) {
         return likedPosts[_user][_index];
     }
+    
+    function getCommentLength(uint _index) public view returns (uint) {
+        return (commentLength[_index]);
+    }
+    
+    function comment(uint _index, string memory _comment) public {
+        comments[_index].push(Comment(msg.sender, block.timestamp, _comment));
+        commentLength[_index]++;
+    }
+    
+    function getComments(uint _index) public view returns (Comment[] memory) {
+        return comments[_index];
+    }
+    
+    
 }

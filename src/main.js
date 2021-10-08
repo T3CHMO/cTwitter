@@ -108,13 +108,13 @@ function productTemplate(_post) {
         <span>
         <div class="input-group">
         <div class="input-group-prepend"></div>
-        <textarea id=comment_${_post.index} class="form-control p-2" style="margin-bottom:10px" aria-label="With textarea"></textarea>
+        <textarea onkeyup="success(${_post.index})" id=comment_${_post.index} class="form-control p-2" style="margin-bottom:10px" aria-label="With textarea"></textarea>
         </div>
           ${boolToLikes(_post.liked, _post.index)}
-          <button class="btn btn-sm btn-outline-dark fs-6 p-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Show comments</button>
-            <a class="btn btn-sm btn-outline-dark commentBtn fs-6 p-2" id=${_post.index} >Comment</a>
+          <button class="btn btn-sm btn-outline-dark fs-6 p-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample${_post.index}" aria-expanded="false" aria-controls="collapseExample">Show comments</button>
+            <a class="btn btn-sm btn-outline-dark commentBtn fs-6 p-2 disabled" id=commentBtn_${_post.index} >Comment</a>
             </span>
-          <div class="collapse" id="collapseExample">
+          <div class="collapse" id="collapseExample${_post.index}">
             <div class="card card-body">
               ${formatComments(_post.comments)}
             </div>
@@ -243,3 +243,17 @@ document.querySelector("#ctwitter").addEventListener("click", async (e) => {
     }
   }
 })
+
+document.querySelector("#ctwitter").addEventListener("keyup", e => {
+  if (e.target.id.includes('comment_')) {
+    const id = e.target.id
+    const btnId = id.substring(0, 7) + "Btn" + id.substring(7);
+    if(document.getElementById(id).value==="") { 
+      document.getElementById(btnId).classList.add("disabled");
+    } else { 
+      document.getElementById(btnId).classList.remove("disabled");
+    }
+  }
+})
+
+  
