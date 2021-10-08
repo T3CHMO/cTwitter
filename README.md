@@ -10,6 +10,9 @@ https://t3chmo.github.io/cTwitter/
 # Additional notes
 For all activity like postking, liking and commenting user is required to have CELO in his wallet, but all operation are free so user will only pay gas.
 
+# TODO
+
+Tipping system - add functionality to tip autor of post with cUSD. 
 
 # Install
 
