@@ -71,7 +71,7 @@ const getPosts = async function () {
     })
     _posts.push(_post)
   }
-  products = await Promise.all(_posts)
+  products = await Promise.all(_posts.reverse())
   renderProducts()
 }
 
@@ -96,7 +96,7 @@ function productTemplate(_post) {
         <div class="translate-middle-y position-absolute top-0">
         ${identiconTemplate(_post.owner)}
         </div>
-        <h2 class="card-title fs-4 fw-bold mt-2">${_post.name}</h2>
+        <h2 class="card-title fs-4 fw-bold mt-2">#${_post.index} ${_post.name}</h2>
         <p class="card-text mb-4" style="min-height: 82px">
           ${_post.post}             
         </p>
