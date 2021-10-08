@@ -23,15 +23,21 @@ contract cTwitter {
 
     mapping (uint => Posts) internal posts;
     mapping (address => mapping(uint => bool)) internal likedPosts;
+<<<<<<< HEAD
     mapping (uint => Comment[]) internal comments;
     mapping (uint => uint) internal commentLength;
 
+=======
+    
+    // Add new post on cTwitter
+>>>>>>> e913c4b6f2ca6306459d3c9af07d9c342f357357
     function addPost(string memory _name, string memory _image, string memory _post) public {
         uint _likes = 0;
         posts[postsLength] = Posts(payable(msg.sender), _name, _image, _post, block.timestamp, _likes);
         postsLength++;
     }
 
+    // Get post based on unique index
     function getPost(uint _index) public view returns (address payable, string memory, string memory, string memory, uint, uint) {
         return (
             posts[_index].owner,
@@ -43,19 +49,23 @@ contract cTwitter {
         );
     }
     
+    // Like post
     function likePost(uint _index) public {
         require(likedPosts[msg.sender][_index] == false, "Already liked this post");
         likedPosts[msg.sender][_index] = true;
         posts[_index].likes++;
     }
     
+    //Get number of posts
     function getPostsLength() public view returns (uint) {
         return (postsLength);
     }
     
+    //Checks if post was liked by specific user
     function isPostLiked(address _user, uint _index) public view returns (bool) {
         return likedPosts[_user][_index];
     }
+<<<<<<< HEAD
     
     function getCommentLength(uint _index) public view returns (uint) {
         return (commentLength[_index]);
@@ -72,3 +82,6 @@ contract cTwitter {
     
     
 }
+=======
+}
+>>>>>>> e913c4b6f2ca6306459d3c9af07d9c342f357357
