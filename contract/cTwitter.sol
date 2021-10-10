@@ -23,14 +23,11 @@ contract cTwitter {
 
     mapping (uint => Posts) internal posts;
     mapping (address => mapping(uint => bool)) internal likedPosts;
-<<<<<<< HEAD
     mapping (uint => Comment[]) internal comments;
     mapping (uint => uint) internal commentLength;
 
-=======
     
     // Add new post on cTwitter
->>>>>>> e913c4b6f2ca6306459d3c9af07d9c342f357357
     function addPost(string memory _name, string memory _image, string memory _post) public {
         uint _likes = 0;
         posts[postsLength] = Posts(payable(msg.sender), _name, _image, _post, block.timestamp, _likes);
@@ -65,7 +62,6 @@ contract cTwitter {
     function isPostLiked(address _user, uint _index) public view returns (bool) {
         return likedPosts[_user][_index];
     }
-<<<<<<< HEAD
     
     function getCommentLength(uint _index) public view returns (uint) {
         return (commentLength[_index]);
@@ -82,6 +78,4 @@ contract cTwitter {
     
     
 }
-=======
 }
->>>>>>> e913c4b6f2ca6306459d3c9af07d9c342f357357
