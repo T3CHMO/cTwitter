@@ -1,6 +1,5 @@
 import Web3 from "web3"
 import { newKitFromWeb3 } from "@celo/contractkit"
-import BigNumber from "bignumber.js"
 import ctwitterAbi from "../contract/ctwitter.abi.json"
 
 const DECIMALS = 18
