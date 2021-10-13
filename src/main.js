@@ -4,7 +4,7 @@ import BigNumber from "bignumber.js"
 import ctwitterAbi from "../contract/ctwitter.abi.json"
 
 const DECIMALS = 18
-const MPContractAddress = "0xD1e673bcb81981d7d532942902fCc2633adc4cB3"
+const CTwitterContractAddress = "0xD1e673bcb81981d7d532942902fCc2633adc4cB3"
 
 let kit
 let contract
@@ -23,7 +23,7 @@ const connectCeloWallet = async function () {
       const accounts = await kit.web3.eth.getAccounts()
       kit.defaultAccount = accounts[0]
 
-      contract = new kit.web3.eth.Contract(ctwitterAbi, MPContractAddress)
+      contract = new kit.web3.eth.Contract(ctwitterAbi, CTwitterContractAddress)
     } catch (error) {
       notification(`⚠️ ${error}.`)
     }
