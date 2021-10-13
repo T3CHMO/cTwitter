@@ -5,6 +5,7 @@ pragma solidity >=0.7.0 <0.9.0;
 contract cTwitter {
 
     uint internal postsLength = 0;
+    uint internal tipPrice = 1;
 
     struct Posts {
         address payable owner;
@@ -61,6 +62,18 @@ contract cTwitter {
     //Checks if post was liked by specific user
     function isPostLiked(address _user, uint _index) public view returns (bool) {
         return likedPosts[_user][_index];
+    }
+
+// Tip User who created the post
+    function tipPost(uint _index) public payable{
+        require(
+          IERC20Token(cUsdTokenAddress).transferFrom(
+            msg.sender,
+            posts[_index].owner,
+            tipPrice
+          ),    
+          "This transaction could not be performed"
+        );
     }
     
     function getCommentLength(uint _index) public view returns (uint) {
